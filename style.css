@@ -35,11 +35,13 @@ body {
   border-radius: 20px;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  /* Preparazione per l'effetto 3D in JS */
   transform-style: preserve-3d;
   will-change: transform;
+  /* Transizione per quando il mouse esce e la carta torna dritta */
+  transition: transform 0.4s ease-out; 
 }
 
+/* NUOVO: Pulsazione Neon sulla foto profilo */
 .avatar {
   width: 90px;
   height: 90px;
@@ -47,6 +49,12 @@ body {
   object-fit: cover;
   border: 3px solid rgba(255,255,255,0.35);
   margin-bottom: 1rem;
+  animation: neon-pulse 3s infinite alternate;
+}
+
+@keyframes neon-pulse {
+  0% { box-shadow: 0 0 10px rgba(13, 138, 188, 0.1); border-color: rgba(255,255,255,0.2); }
+  100% { box-shadow: 0 0 25px rgba(13, 138, 188, 0.5); border-color: rgba(255,255,255,0.6); }
 }
 
 .title-wrapper {
@@ -55,7 +63,7 @@ body {
   margin-bottom: 0.75rem;
 }
 
-/* FIX: Animazione Macchina da Scrivere corretta */
+/* FIX: Aumentata la larghezza massima per contenere sempre tutto il nome */
 h1 {
   font-family: 'VT323', monospace;
   font-size: 1.8rem; 
@@ -65,8 +73,7 @@ h1 {
   overflow: hidden; 
   white-space: nowrap; 
   border-right: 3px solid #fff; 
-  /* Calcola i 16 caratteri + l'ingombro del letter-spacing */
-  width: calc(16ch + 32px); 
+  width: calc(18ch + 36px); /* Più spazio per evitare tagli */
   animation: 
     typing 1.5s steps(16) forwards, 
     blink 0.8s step-end infinite;   
@@ -74,7 +81,7 @@ h1 {
 
 @keyframes typing {
   from { width: 0; }
-  to { width: calc(16ch + 32px); }
+  to { width: calc(18ch + 36px); }
 }
 
 @keyframes blink {
@@ -114,13 +121,24 @@ h1 {
   font-size: 0.9rem;
   backdrop-filter: blur(6px);
   transition: background 0.2s, transform 0.15s;
+  /* NUOVO: Glitch automatico ogni 5 secondi per i dispositivi mobile */
+  animation: auto-glitch 5s infinite;
 }
 
-/* NUOVO: Effetto Glitch al passaggio del mouse */
 .link-btn:hover {
   background: rgba(255,255,255,0.22);
   transform: translateY(-2px);
+  /* Sovrascrive con il glitch veloce quando c'è il mouse */
   animation: glitch-anim 0.2s linear infinite;
+}
+
+/* Glitch che si attiva da solo brevemente */
+@keyframes auto-glitch {
+  0%, 94% { text-shadow: none; transform: translateY(0); }
+  95% { text-shadow: 2px 0 0 rgba(255,0,128,0.7), -2px 0 0 rgba(0,255,255,0.7); transform: translateY(-1px); }
+  97% { text-shadow: -2px 0 0 rgba(255,0,128,0.7), 2px 0 0 rgba(0,255,255,0.7); transform: translateY(1px); }
+  99% { text-shadow: 2px 0 0 rgba(255,0,128,0.7), -2px 0 0 rgba(0,255,255,0.7); transform: translateY(-1px); }
+  100% { text-shadow: none; transform: translateY(0); }
 }
 
 @keyframes glitch-anim {
@@ -139,9 +157,7 @@ h1 {
   justify-content: space-between;
   pointer-events: none;
 }
-.link-btn.wip:hover {
-  animation: none; /* Rimuove il glitch da quelli disabilitati */
-}
+.link-btn.wip:hover { animation: none; }
 
 .badge {
   font-size: 0.62rem;
@@ -184,7 +200,8 @@ h1 {
 
 @media (max-width: 480px) {
   .card { padding: 2rem 1.25rem; border-radius: 16px; }
-  h1 { font-size: 1.5rem; }
+  /* FIX: Nome leggermente ridimensionato per sicurezza su schermi stretti */
+  h1 { font-size: 1.45rem; } 
   .bio { font-size: 0.76rem; }
   .link-btn { font-size: 0.85rem; padding: 0.8rem 1rem; }
   .avatar { width: 75px; height: 75px; }
