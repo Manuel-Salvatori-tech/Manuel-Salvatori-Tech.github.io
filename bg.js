@@ -1,181 +1,70 @@
-/* Import corretto */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+let W, H, particles;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
 }
 
-body {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Segoe UI', sans-serif;
-  color: #fff;
-  overflow: hidden;
+function createParticles() {
+  particles = Array.from({ length: 80 }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 2 + 0.5,
+    dx: (Math.random() - 0.5) * 0.4,
+    dy: (Math.random() - 0.5) * 0.4,
+    alpha: Math.random() * 0.5 + 0.2,
+  }));
 }
 
-#bg {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 0;
+function drawGradient() {
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, '#0f0c29');
+  grad.addColorStop(0.5, '#302b63');
+  grad.addColorStop(1, '#24243e');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
 }
 
-.card {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: 2.5rem 2rem;
-  max-width: 420px;
-  width: 90%;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 20px;
-  /* Effetto vetro smerigliato */
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+    ctx.fill();
+    p.x += p.dx;
+    p.y += p.dy;
+    if (p.x < 0 || p.x > W) p.dx *= -1;
+    if (p.y < 0 || p.y > H) p.dy *= -1;
+  });
 }
 
-.avatar {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid rgba(255,255,255,0.35);
-  margin-bottom: 1rem;
-}
-
-h1 {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  margin-bottom: 0.75rem;
-  line-height: 1.8;
-}
-
-.bio {
-  font-size: 0.82rem;
-  color: rgba(255,255,255,0.6);
-  line-height: 1.7;
-  margin-bottom: 0.5rem;
-}
-
-.section-label {
-  font-size: 0.65rem;
-  color: rgba(255,255,255,0.35);
-  letter-spacing: 2px;
-  margin: 1.25rem 0 0.65rem;
-  text-transform: uppercase;
-}
-
-.links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-}
-
-.link-btn {
-  display: block;
-  padding: 0.85rem 1.2rem;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 12px;
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.9rem;
-  backdrop-filter: blur(6px);
-  transition: background 0.2s, transform 0.15s;
-}
-
-.link-btn:hover {
-  background: rgba(255,255,255,0.22);
-  transform: translateY(-2px);
-}
-
-.link-btn.wip {
-  opacity: 0.5;
-  cursor: default;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  pointer-events: none;
-}
-
-.badge {
-  font-size: 0.62rem;
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 6px;
-  padding: 0.2rem 0.5rem;
-  color: rgba(255,255,255,0.7);
-  white-space: nowrap;
-}
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1.75rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
-
-.social-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 50%;
-  color: rgba(255,255,255,0.75);
-  text-decoration: none;
-  transition: background 0.2s, transform 0.15s, color 0.2s;
-}
-
-.social-btn svg {
-  width: 20px;
-  height: 20px;
-}
-
-.social-btn:hover {
-  background: rgba(255,255,255,0.2);
-  color: #fff;
-  transform: translateY(-2px);
-}
-
-@media (max-width: 480px) {
-  .card {
-    padding: 2rem 1.25rem;
-    border-radius: 16px;
-  }
-
-  h1 { font-size: 0.72rem; }
-  .bio { font-size: 0.76rem; }
-
-  .link-btn {
-    font-size: 0.85rem;
-    padding: 0.8rem 1rem;
-  }
-
-  .avatar {
-    width: 75px;
-    height: 75px;
-  }
-
-  .social-icons { gap: 0.75rem; }
-
-  .social-btn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .social-btn svg {
-    width: 18px;
-    height: 18px;
+function drawLines() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(255,255,255,${0.12 * (1 - dist / 120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
   }
 }
+
+function loop() {
+  drawGradient();
+  drawParticles();
+  drawLines();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize', () => { resize(); createParticles(); });
+resize();
+createParticles();
+loop();
