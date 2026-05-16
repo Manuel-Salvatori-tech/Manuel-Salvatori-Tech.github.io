@@ -2,8 +2,8 @@ const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
 
 let W, H, particles;
-// Variabile per tracciare il mouse per lo sfondo
 let mouse = { x: null, y: null };
+let time = 0; // Serve per calcolare l'orbita del nodo fantasma
 
 function resize() {
   W = canvas.width = window.innerWidth;
@@ -46,21 +46,31 @@ function drawParticles() {
 }
 
 function drawLines() {
+  // NUOVO: Determina il target di attrazione. 
+  // Se c'è il mouse/dito usa quello. Altrimenti, se siamo su mobile, crea un'orbita al centro.
+  let targetX = mouse.x;
+  let targetY = mouse.y;
+
+  if (targetX === null && window.innerWidth <= 768) {
+     targetX = W / 2 + Math.cos(time) * 100;
+     targetY = H / 2 + Math.sin(time) * 100;
+  }
+
   for (let i = 0; i < particles.length; i++) {
-    // NUOVO: Collega le particelle al mouse dell'utente
-    if (mouse.x != null) {
-      const distMouse = Math.hypot(particles[i].x - mouse.x, particles[i].y - mouse.y);
-      if (distMouse < 160) {
+    // Disegna la linea verso il target (mouse o orbita)
+    if (targetX != null) {
+      const distTarget = Math.hypot(particles[i].x - targetX, particles[i].y - targetY);
+      if (distTarget < 160) {
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(mouse.x, mouse.y);
-        ctx.strokeStyle = `rgba(255,255,255,${0.25 * (1 - distMouse / 160)})`;
+        ctx.lineTo(targetX, targetY);
+        ctx.strokeStyle = `rgba(255,255,255,${0.25 * (1 - distTarget / 160)})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
     }
 
-    // Collega le particelle tra di loro
+    // Disegna le linee tra particella e particella
     for (let j = i + 1; j < particles.length; j++) {
       const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
       if (dist < 120) {
@@ -79,24 +89,38 @@ function loop() {
   drawGradient();
   drawParticles();
   drawLines();
+  time += 0.015; // Velocità dell'orbita per mobile
   requestAnimationFrame(loop);
 }
 
-// Event Listeners per lo sfondo interattivo
+// Supporto Mouse
 window.addEventListener('resize', () => { resize(); createParticles(); });
 window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
 window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
-// --- NUOVO: Effetto Inclinazione 3D della Card ---
+// NUOVO: Supporto Touch per Mobile
+window.addEventListener('touchstart', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
+window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
+window.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
+
+// FIX: Inclinazione 3D più morbida ed elegante
 const card = document.querySelector('.card');
 document.addEventListener('mousemove', (e) => {
-  // Calcola l'inclinazione in base a quanto il mouse si allontana dal centro (diviso per 40 per renderlo sottile)
-  let xAxis = (window.innerWidth / 2 - e.pageX) / 40; 
-  let yAxis = (window.innerHeight / 2 - e.pageY) / 40;
-  card.style.transform = `perspective(1000px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+  // Divisore cambiato da 40 a 90 per un effetto molto più sottile e premium
+  let xAxis = (window.innerWidth / 2 - e.pageX) / 90; 
+  let yAxis = (window.innerHeight / 2 - e.pageY) / 90;
+  // Disabilitato per mobile
+  if (window.innerWidth > 768) {
+    card.style.transform = `perspective(1000px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+  }
 });
 
-// --- NUOVO: Trucco Marketing Tab ---
+// Fa tornare la carta dritta quando il mouse esce dalla pagina
+document.addEventListener('mouseout', () => {
+  card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg)`;
+});
+
+// Trucco Marketing Tab
 let originalTitle = document.title;
 window.addEventListener("blur", () => {
   document.title = "Ehi, torna qui! 👀";
