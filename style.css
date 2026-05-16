@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
 
 * {
   margin: 0;
@@ -46,12 +46,25 @@ body {
   margin-bottom: 1rem;
 }
 
+/* Modificato con il nuovo font Silkscreen */
 h1 {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.9rem;
+  font-family: 'Silkscreen', cursive;
+  font-size: 1.4rem; 
   letter-spacing: 1px;
   margin-bottom: 0.75rem;
-  line-height: 1.8;
+  line-height: 1.4;
+}
+
+/* Effetto Cursore Lampeggiante sul nome (ora visibile ovunque) */
+h1::after {
+  content: '_';
+  animation: blink 1s step-start infinite;
+  margin-left: 5px;
+  color: #0D8ABC; 
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
 }
 
 .bio {
@@ -151,34 +164,33 @@ h1 {
     padding: 2rem 1.25rem;
     border-radius: 16px;
   }
-  h1 { font-size: 0.72rem; }
+  
+  /* Adattato per schermi piccoli usando il nuovo font */
+  h1 { 
+    font-size: 1.1rem; 
+  }
+  
   .bio { font-size: 0.76rem; }
+  
   .link-btn {
     font-size: 0.85rem;
     padding: 0.8rem 1rem;
   }
+  
   .avatar {
     width: 75px;
     height: 75px;
   }
+  
   .social-icons { gap: 0.75rem; }
+  
   .social-btn {
     width: 40px;
     height: 40px;
   }
+  
   .social-btn svg {
     width: 18px;
     height: 18px;
   }
-  
-h1::after {
-  content: '_';
-  animation: blink 1s step-start infinite;
-  margin-left: 5px;
-  color: #0D8ABC; 
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
 }
