@@ -21,9 +21,11 @@ function createParticles() {
 
 function drawGradient() {
   const grad = ctx.createLinearGradient(0, 0, W, H);
-  grad.addColorStop(0, '#0f0c29');
-  grad.addColorStop(0.5, '#302b63');
-  grad.addColorStop(1, '#24243e');
+  // Nuovo tema: Viola scuro / Dark Violet
+  grad.addColorStop(0, '#1a0b2e');
+  grad.addColorStop(0.5, '#3d1c54');
+  grad.addColorStop(1, '#1e0c2b');
+  
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
 }
@@ -34,8 +36,10 @@ function drawParticles() {
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
     ctx.fill();
+    
     p.x += p.dx;
     p.y += p.dy;
+    
     if (p.x < 0 || p.x > W) p.dx *= -1;
     if (p.y < 0 || p.y > H) p.dy *= -1;
   });
