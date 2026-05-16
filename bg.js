@@ -46,18 +46,16 @@ function drawParticles() {
 }
 
 function drawLines() {
-  // NUOVO: Determina il target di attrazione. 
-  // Se c'è il mouse/dito usa quello. Altrimenti, se siamo su mobile, crea un'orbita al centro.
   let targetX = mouse.x;
   let targetY = mouse.y;
 
+  // Nodo fantasma per Mobile
   if (targetX === null && window.innerWidth <= 768) {
      targetX = W / 2 + Math.cos(time) * 100;
      targetY = H / 2 + Math.sin(time) * 100;
   }
 
   for (let i = 0; i < particles.length; i++) {
-    // Disegna la linea verso il target (mouse o orbita)
     if (targetX != null) {
       const distTarget = Math.hypot(particles[i].x - targetX, particles[i].y - targetY);
       if (distTarget < 160) {
@@ -70,7 +68,6 @@ function drawLines() {
       }
     }
 
-    // Disegna le linee tra particella e particella
     for (let j = i + 1; j < particles.length; j++) {
       const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
       if (dist < 120) {
@@ -89,35 +86,59 @@ function loop() {
   drawGradient();
   drawParticles();
   drawLines();
-  time += 0.015; // Velocità dell'orbita per mobile
+  time += 0.015;
   requestAnimationFrame(loop);
 }
 
-// Supporto Mouse
+// Eventi Mouse Desktop
 window.addEventListener('resize', () => { resize(); createParticles(); });
 window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
 window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
-// NUOVO: Supporto Touch per Mobile
+// Eventi Touch Mobile
 window.addEventListener('touchstart', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
 window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
 window.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
 
-// FIX: Inclinazione 3D più morbida ed elegante
+
 const card = document.querySelector('.card');
+
+// --- Effetto Inclinazione 3D Desktop (Mouse) ---
 document.addEventListener('mousemove', (e) => {
-  // Divisore cambiato da 40 a 90 per un effetto molto più sottile e premium
-  let xAxis = (window.innerWidth / 2 - e.pageX) / 90; 
-  let yAxis = (window.innerHeight / 2 - e.pageY) / 90;
-  // Disabilitato per mobile
   if (window.innerWidth > 768) {
+    let xAxis = (window.innerWidth / 2 - e.pageX) / 90; 
+    let yAxis = (window.innerHeight / 2 - e.pageY) / 90;
     card.style.transform = `perspective(1000px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
   }
 });
 
-// Fa tornare la carta dritta quando il mouse esce dalla pagina
 document.addEventListener('mouseout', () => {
   card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg)`;
+});
+
+// --- NUOVO: Effetto Giroscopio 3D Mobile ---
+window.addEventListener('deviceorientation', (e) => {
+  // Esegue solo su schermi piccoli e se i dati del giroscopio sono disponibili
+  if (window.innerWidth <= 768 && e.gamma !== null && e.beta !== null) {
+    let gamma = e.gamma; // Inclinazione Destra/Sinistra
+    let beta = e.beta;   // Inclinazione Avanti/Indietro
+
+    // Limitiamo i valori per evitare che la carta si capovolga completamente
+    if (gamma > 30) gamma = 30;
+    if (gamma < -30) gamma = -30;
+    
+    // Calcoliamo la rotazione rendendola fluida (diviso 3). 
+    // Sottraggo 45 a beta perché di solito si tiene il telefono inclinato in mano.
+    let rotateY = gamma / 3; 
+    let rotateX = (beta - 45) / 3;
+
+    // Limitiamo l'asse X
+    if (rotateX > 15) rotateX = 15;
+    if (rotateX < -15) rotateX = -15;
+
+    // Applichiamo la trasformazione
+    card.style.transform = `perspective(1000px) rotateY(${rotateY}deg) rotateX(${-rotateX}deg)`;
+  }
 });
 
 // Trucco Marketing Tab
