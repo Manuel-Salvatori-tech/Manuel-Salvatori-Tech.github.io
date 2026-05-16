@@ -35,6 +35,9 @@ body {
   border-radius: 20px;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  /* Preparazione per l'effetto 3D in JS */
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .avatar {
@@ -46,38 +49,34 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Contenitore per centrare l'animazione Typewriter */
 .title-wrapper {
   display: flex;
   justify-content: center;
   margin-bottom: 0.75rem;
 }
 
-/* Animazione Macchina da Scrivere e Cursore */
+/* FIX: Animazione Macchina da Scrivere corretta */
 h1 {
   font-family: 'VT323', monospace;
-  font-size: 1.8rem; /* Molto fine ed elegante */
+  font-size: 1.8rem; 
   font-weight: normal;
   letter-spacing: 2px;
   margin: 0;
   overflow: hidden; 
   white-space: nowrap; 
-  /* Cursore bianco */
   border-right: 3px solid #fff; 
-  /* "Manuel Salvatori" conta esattamente 16 caratteri */
-  width: 16ch; 
+  /* Calcola i 16 caratteri + l'ingombro del letter-spacing */
+  width: calc(16ch + 32px); 
   animation: 
-    typing 1.5s steps(16) forwards, /* Scrive il testo in 1.5 secondi */
-    blink 0.8s step-end infinite;   /* Fa lampeggiare il cursore all'infinito */
+    typing 1.5s steps(16) forwards, 
+    blink 0.8s step-end infinite;   
 }
 
-/* Frame animazione testo */
 @keyframes typing {
   from { width: 0; }
-  to { width: 16ch; }
+  to { width: calc(16ch + 32px); }
 }
 
-/* Frame animazione cursore */
 @keyframes blink {
   0%, 100% { border-color: transparent; }
   50% { border-color: #fff; }
@@ -117,9 +116,19 @@ h1 {
   transition: background 0.2s, transform 0.15s;
 }
 
+/* NUOVO: Effetto Glitch al passaggio del mouse */
 .link-btn:hover {
   background: rgba(255,255,255,0.22);
   transform: translateY(-2px);
+  animation: glitch-anim 0.2s linear infinite;
+}
+
+@keyframes glitch-anim {
+  0% { text-shadow: 2px 0 0 rgba(255,0,128,0.7), -2px 0 0 rgba(0,255,255,0.7); }
+  25% { text-shadow: -2px 0 0 rgba(255,0,128,0.7), 2px 0 0 rgba(0,255,255,0.7); }
+  50% { text-shadow: 2px 0 0 rgba(255,0,128,0.7), -2px 0 0 rgba(0,255,255,0.7); }
+  75% { text-shadow: -2px 0 0 rgba(255,0,128,0.7), 2px 0 0 rgba(0,255,255,0.7); }
+  100% { text-shadow: 2px 0 0 rgba(255,0,128,0.7), -2px 0 0 rgba(0,255,255,0.7); }
 }
 
 .link-btn.wip {
@@ -129,6 +138,9 @@ h1 {
   align-items: center;
   justify-content: space-between;
   pointer-events: none;
+}
+.link-btn.wip:hover {
+  animation: none; /* Rimuove il glitch da quelli disabilitati */
 }
 
 .badge {
@@ -163,12 +175,7 @@ h1 {
   text-decoration: none;
   transition: background 0.2s, transform 0.15s, color 0.2s;
 }
-
-.social-btn svg {
-  width: 20px;
-  height: 20px;
-}
-
+.social-btn svg { width: 20px; height: 20px; }
 .social-btn:hover {
   background: rgba(255,255,255,0.2);
   color: #fff;
@@ -176,27 +183,12 @@ h1 {
 }
 
 @media (max-width: 480px) {
-  .card {
-    padding: 2rem 1.25rem;
-    border-radius: 16px;
-  }
+  .card { padding: 2rem 1.25rem; border-radius: 16px; }
   h1 { font-size: 1.5rem; }
   .bio { font-size: 0.76rem; }
-  .link-btn {
-    font-size: 0.85rem;
-    padding: 0.8rem 1rem;
-  }
-  .avatar {
-    width: 75px;
-    height: 75px;
-  }
+  .link-btn { font-size: 0.85rem; padding: 0.8rem 1rem; }
+  .avatar { width: 75px; height: 75px; }
   .social-icons { gap: 0.75rem; }
-  .social-btn {
-    width: 40px;
-    height: 40px;
-  }
-  .social-btn svg {
-    width: 18px;
-    height: 18px;
-  }
+  .social-btn { width: 40px; height: 40px; }
+  .social-btn svg { width: 18px; height: 18px; }
 }
