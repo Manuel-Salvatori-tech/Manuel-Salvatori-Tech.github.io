@@ -90,9 +90,9 @@ h1 {
 }
 
 .bio {
-  font-size: 0.82rem;
-  color: rgba(255,255,255,0.6);
-  line-height: 1.7;
+  font-size: 0.9rem; /* Ingrandito da 0.82rem */
+  color: rgba(255,255,255,0.85); /* Molto più luminoso e leggibile */
+  line-height: 1.6;
   margin-bottom: 0.5rem;
 }
 
