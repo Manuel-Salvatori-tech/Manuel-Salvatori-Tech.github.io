@@ -215,3 +215,11 @@ h1 {
   .social-btn { width: 40px; height: 40px; }
   .social-btn svg { width: 18px; height: 18px; }
 }
+
+.footer-note {
+  font-family: 'VT323', monospace;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.4); /* Tenuto leggero per non disturbare */
+  margin-top: 1.5rem;
+  letter-spacing: 1px;
+}
