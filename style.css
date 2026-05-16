@@ -167,6 +167,12 @@ h1 {
   padding: 0.2rem 0.5rem;
   color: rgba(255,255,255,0.7);
   white-space: nowrap;
+  
+  /* --- NUOVE REGOLE DI SPAZIATURA --- */
+  display: inline-block;
+  margin-left: 10px; /* Crea lo spazio tra il nome del sito e il badge */
+  vertical-align: middle; /* Allinea il badge al centro della riga */
+  transform: translateY(-1px); /* Bilancia otticamente il badge con il font */
 }
 
 .social-icons {
