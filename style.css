@@ -170,4 +170,15 @@ h1 {
     width: 18px;
     height: 18px;
   }
+  
+h1::after {
+  content: '_';
+  animation: blink 1s step-start infinite;
+  margin-left: 5px;
+  color: #0D8ABC; 
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
 }
