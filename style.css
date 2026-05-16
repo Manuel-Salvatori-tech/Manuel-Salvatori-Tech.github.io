@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
 * {
   margin: 0;
@@ -46,25 +46,41 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Modificato con il nuovo font Silkscreen */
-h1 {
-  font-family: 'Silkscreen', cursive;
-  font-size: 1.4rem; 
-  letter-spacing: 1px;
+/* Contenitore per centrare l'animazione Typewriter */
+.title-wrapper {
+  display: flex;
+  justify-content: center;
   margin-bottom: 0.75rem;
-  line-height: 1.4;
 }
 
-/* Effetto Cursore Lampeggiante sul nome (ora visibile ovunque) */
-h1::after {
-  content: '_';
-  animation: blink 1s step-start infinite;
-  margin-left: 5px;
-  color: #0D8ABC; 
+/* Animazione Macchina da Scrivere e Cursore */
+h1 {
+  font-family: 'VT323', monospace;
+  font-size: 1.8rem; /* Molto fine ed elegante */
+  font-weight: normal;
+  letter-spacing: 2px;
+  margin: 0;
+  overflow: hidden; 
+  white-space: nowrap; 
+  /* Cursore bianco */
+  border-right: 3px solid #fff; 
+  /* "Manuel Salvatori" conta esattamente 16 caratteri */
+  width: 16ch; 
+  animation: 
+    typing 1.5s steps(16) forwards, /* Scrive il testo in 1.5 secondi */
+    blink 0.8s step-end infinite;   /* Fa lampeggiare il cursore all'infinito */
 }
 
+/* Frame animazione testo */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 16ch; }
+}
+
+/* Frame animazione cursore */
 @keyframes blink {
-  50% { opacity: 0; }
+  0%, 100% { border-color: transparent; }
+  50% { border-color: #fff; }
 }
 
 .bio {
@@ -164,31 +180,21 @@ h1::after {
     padding: 2rem 1.25rem;
     border-radius: 16px;
   }
-  
-  /* Adattato per schermi piccoli usando il nuovo font */
-  h1 { 
-    font-size: 1.1rem; 
-  }
-  
+  h1 { font-size: 1.5rem; }
   .bio { font-size: 0.76rem; }
-  
   .link-btn {
     font-size: 0.85rem;
     padding: 0.8rem 1rem;
   }
-  
   .avatar {
     width: 75px;
     height: 75px;
   }
-  
   .social-icons { gap: 0.75rem; }
-  
   .social-btn {
     width: 40px;
     height: 40px;
   }
-  
   .social-btn svg {
     width: 18px;
     height: 18px;
