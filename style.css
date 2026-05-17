@@ -6,14 +6,18 @@
   box-sizing: border-box;
 }
 
+/* FIX: Sbloccato lo scorrimento verticale e aggiunto respiro per il mobile */
 body {
+  width: 100%;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Segoe UI', sans-serif;
   color: #fff;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto; /* Permette il rollio della pagina se la card è più alta dello schermo */
+  padding: 2rem 0; /* Evita che la card tocchi i bordi superiori/inferiori del telefono */
 }
 
 #bg {
@@ -41,7 +45,7 @@ body {
   transition: transform 0.4s ease-out; 
 }
 
-/* NUOVO: Pulsazione Neon sulla foto profilo */
+/* Pulsazione Neon sulla foto profilo */
 .avatar {
   width: 90px;
   height: 90px;
@@ -63,7 +67,7 @@ body {
   margin-bottom: 0.75rem;
 }
 
-/* FIX: Aumentata la larghezza massima per contenere sempre tutto il nome */
+/* Animazione Macchina da Scrivere corretta */
 h1 {
   font-family: 'VT323', monospace;
   font-size: 1.8rem; 
@@ -90,8 +94,9 @@ h1 {
 }
 
 .bio {
-  font-size: 0.9rem; /* Ingrandito da 0.82rem */
-  color: rgba(255,255,255,0.85); /* Molto più luminoso e leggibile */
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 0.95rem; /* Ottimizzato per desktop */
+  color: rgba(255,255,255,0.85); /* Bilanciamento perfetto di luminosità */
   line-height: 1.6;
   margin-bottom: 0.5rem;
 }
@@ -121,7 +126,7 @@ h1 {
   font-size: 0.9rem;
   backdrop-filter: blur(6px);
   transition: background 0.2s, transform 0.15s;
-  /* NUOVO: Glitch automatico ogni 5 secondi per i dispositivi mobile */
+  /* Glitch automatico ogni 5 secondi per i dispositivi mobile */
   animation: auto-glitch 5s infinite;
 }
 
@@ -168,11 +173,11 @@ h1 {
   color: rgba(255,255,255,0.7);
   white-space: nowrap;
   
-  /* --- NUOVE REGOLE DI SPAZIATURA --- */
+  /* Spaziatura e allineamento */
   display: inline-block;
-  margin-left: 10px; /* Crea lo spazio tra il nome del sito e il badge */
-  vertical-align: middle; /* Allinea il badge al centro della riga */
-  transform: translateY(-1px); /* Bilancia otticamente il badge con il font */
+  margin-left: 10px; 
+  vertical-align: middle; 
+  transform: translateY(-1px); 
 }
 
 .social-icons {
@@ -204,22 +209,22 @@ h1 {
   transform: translateY(-2px);
 }
 
+.footer-note {
+  font-family: 'VT323', monospace;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.35); 
+  margin-top: 2rem;
+  letter-spacing: 1px;
+}
+
 @media (max-width: 480px) {
   .card { padding: 2rem 1.25rem; border-radius: 16px; }
-  /* FIX: Nome leggermente ridimensionato per sicurezza su schermi stretti */
   h1 { font-size: 1.45rem; } 
-  .bio { font-size: 0.76rem; }
+  .bio { font-size: 0.88rem; } /* Adattata proporzionalmente al mobile per non comprimere */
   .link-btn { font-size: 0.85rem; padding: 0.8rem 1rem; }
   .avatar { width: 75px; height: 75px; }
   .social-icons { gap: 0.75rem; }
   .social-btn { width: 40px; height: 40px; }
   .social-btn svg { width: 18px; height: 18px; }
-}
-
-.footer-note {
-  font-family: 'VT323', monospace;
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.4); /* Tenuto leggero per non disturbare */
-  margin-top: 1.5rem;
-  letter-spacing: 1px;
+  .footer-note { margin-top: 1.5rem; font-size: 0.9rem; }
 }
