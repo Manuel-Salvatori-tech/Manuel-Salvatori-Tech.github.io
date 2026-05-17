@@ -6,7 +6,6 @@
   box-sizing: border-box;
 }
 
-/* FIX: Supporto all'altezza dinamica per Safari, reset e padding di sicurezza */
 html {
   height: 100%;
   height: -webkit-fill-available;
@@ -16,7 +15,6 @@ html {
 body {
   width: 100%;
   min-height: 100vh;
-  /* Forza il calcolo dell'altezza escludendo le barre di Safari e dei browser mobile */
   min-height: -webkit-fill-available; 
   display: flex;
   align-items: center;
@@ -25,7 +23,6 @@ body {
   color: #fff;
   overflow-x: hidden;
   overflow-y: auto; 
-  /* Zona di sicurezza: la card dista sempre almeno 40px dai margini dello schermo quando si scorre */
   padding: 40px 0; 
 }
 
@@ -48,10 +45,13 @@ body {
   border-radius: 20px;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  transform-style: preserve-3d;
-  will-change: transform;
   
+  /* Transizione per quando il mouse esce e la carta torna dritta */
   transition: transform 0.4s ease-out; 
+  
+  /* FIX PER SAFARI MOBILE: Rimuoviamo il preserve-3d che staccava la card dalle barre del browser */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .avatar {
@@ -215,4 +215,19 @@ h1 {
 .footer-note {
   font-family: 'VT323', monospace;
   font-size: 0.95rem;
-  color: rgba(255,255,
+  color: rgba(255,255,255,0.35); 
+  margin-top: 2rem;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 480px) {
+  .card { padding: 2rem 1.25rem; border-radius: 16px; }
+  h1 { font-size: 1.45rem; } 
+  .bio { font-size: 0.88rem; } 
+  .link-btn { font-size: 0.85rem; padding: 0.8rem 1rem; }
+  .avatar { width: 75px; height: 75px; }
+  .social-icons { gap: 0.75rem; }
+  .social-btn { width: 40px; height: 40px; }
+  .social-btn svg { width: 18px; height: 18px; }
+  .footer-note { margin-top: 1.5rem; font-size: 0.9rem; }
+}
