@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 
 let W, H, particles;
 let mouse = { x: null, y: null };
-let time = 0; // Serve per calcolare l'orbita del nodo fantasma
+let time = 0; 
 
 function resize() {
   W = canvas.width = window.innerWidth;
@@ -49,7 +49,7 @@ function drawLines() {
   let targetX = mouse.x;
   let targetY = mouse.y;
 
-  // Nodo fantasma per Mobile
+  
   if (targetX === null && window.innerWidth <= 768) {
      targetX = W / 2 + Math.cos(time) * 100;
      targetY = H / 2 + Math.sin(time) * 100;
@@ -90,12 +90,12 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-// Eventi Mouse Desktop
+
 window.addEventListener('resize', () => { resize(); createParticles(); });
 window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
 window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
-// Eventi Touch Mobile
+
 window.addEventListener('touchstart', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
 window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
 window.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
@@ -103,7 +103,7 @@ window.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
 
 const card = document.querySelector('.card');
 
-// --- Effetto Inclinazione 3D Desktop (Mouse) ---
+
 document.addEventListener('mousemove', (e) => {
   if (window.innerWidth > 768) {
     let xAxis = (window.innerWidth / 2 - e.pageX) / 90; 
@@ -116,32 +116,32 @@ document.addEventListener('mouseout', () => {
   card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg)`;
 });
 
-// --- NUOVO: Effetto Giroscopio 3D Mobile ---
-window.addEventListener('deviceorientation', (e) => {
-  // Esegue solo su schermi piccoli e se i dati del giroscopio sono disponibili
-  if (window.innerWidth <= 768 && e.gamma !== null && e.beta !== null) {
-    let gamma = e.gamma; // Inclinazione Destra/Sinistra
-    let beta = e.beta;   // Inclinazione Avanti/Indietro
 
-    // Limitiamo i valori per evitare che la carta si capovolga completamente
+window.addEventListener('deviceorientation', (e) => {
+  
+  if (window.innerWidth <= 768 && e.gamma !== null && e.beta !== null) {
+    let gamma = e.gamma; 
+    let beta = e.beta;   
+
+    
     if (gamma > 30) gamma = 30;
     if (gamma < -30) gamma = -30;
     
-    // Calcoliamo la rotazione rendendola fluida (diviso 3). 
-    // Sottraggo 45 a beta perché di solito si tiene il telefono inclinato in mano.
+    
+    
     let rotateY = gamma / 3; 
     let rotateX = (beta - 45) / 3;
 
-    // Limitiamo l'asse X
+    
     if (rotateX > 15) rotateX = 15;
     if (rotateX < -15) rotateX = -15;
 
-    // Applichiamo la trasformazione
+    
     card.style.transform = `perspective(1000px) rotateY(${rotateY}deg) rotateX(${-rotateX}deg)`;
   }
 });
 
-// Trucco Marketing Tab
+
 let originalTitle = document.title;
 window.addEventListener("blur", () => {
   document.title = "Ehi, torna qui! 👀";
@@ -150,7 +150,7 @@ window.addEventListener("focus", () => {
   document.title = originalTitle;
 });
 
-// Avvia tutto
+
 resize();
 createParticles();
 loop();
