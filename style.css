@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-/* FIX: Sbloccato lo scorrimento verticale e aggiunto respiro per il mobile */
+
 body {
   width: 100%;
   min-height: 100vh;
@@ -16,8 +16,8 @@ body {
   font-family: 'Segoe UI', sans-serif;
   color: #fff;
   overflow-x: hidden;
-  overflow-y: auto; /* Permette il rollio della pagina se la card è più alta dello schermo */
-  padding: 2rem 0; /* Evita che la card tocchi i bordi superiori/inferiori del telefono */
+  overflow-y: auto; 
+  padding: 2rem 0; 
 }
 
 #bg {
@@ -41,11 +41,11 @@ body {
   -webkit-backdrop-filter: blur(14px);
   transform-style: preserve-3d;
   will-change: transform;
-  /* Transizione per quando il mouse esce e la carta torna dritta */
+  
   transition: transform 0.4s ease-out; 
 }
 
-/* Pulsazione Neon sulla foto profilo */
+
 .avatar {
   width: 90px;
   height: 90px;
@@ -67,7 +67,7 @@ body {
   margin-bottom: 0.75rem;
 }
 
-/* Animazione Macchina da Scrivere corretta */
+
 h1 {
   font-family: 'VT323', monospace;
   font-size: 1.8rem; 
@@ -77,7 +77,7 @@ h1 {
   overflow: hidden; 
   white-space: nowrap; 
   border-right: 3px solid #fff; 
-  width: calc(18ch + 36px); /* Più spazio per evitare tagli */
+  width: calc(18ch + 36px); 
   animation: 
     typing 1.5s steps(16) forwards, 
     blink 0.8s step-end infinite;   
@@ -95,8 +95,8 @@ h1 {
 
 .bio {
   font-family: 'Segoe UI', sans-serif;
-  font-size: 0.95rem; /* Ottimizzato per desktop */
-  color: rgba(255,255,255,0.85); /* Bilanciamento perfetto di luminosità */
+  font-size: 0.95rem; 
+  color: rgba(255,255,255,0.85); 
   line-height: 1.6;
   margin-bottom: 0.5rem;
 }
@@ -126,18 +126,18 @@ h1 {
   font-size: 0.9rem;
   backdrop-filter: blur(6px);
   transition: background 0.2s, transform 0.15s;
-  /* Glitch automatico ogni 5 secondi per i dispositivi mobile */
+ 
   animation: auto-glitch 5s infinite;
 }
 
 .link-btn:hover {
   background: rgba(255,255,255,0.22);
   transform: translateY(-2px);
-  /* Sovrascrive con il glitch veloce quando c'è il mouse */
+ 
   animation: glitch-anim 0.2s linear infinite;
 }
 
-/* Glitch che si attiva da solo brevemente */
+
 @keyframes auto-glitch {
   0%, 94% { text-shadow: none; transform: translateY(0); }
   95% { text-shadow: 2px 0 0 rgba(255,0,128,0.7), -2px 0 0 rgba(0,255,255,0.7); transform: translateY(-1px); }
@@ -157,7 +157,7 @@ h1 {
 .link-btn.wip {
   opacity: 0.5;
   cursor: default;
-  display: block; /* Modificato da flex a block per centrare il testo come gli altri bottoni */
+  display: block; 
   pointer-events: none;
 }
 .link-btn.wip:hover { animation: none; }
@@ -171,7 +171,7 @@ h1 {
   color: rgba(255,255,255,0.7);
   white-space: nowrap;
   
-  /* Spaziatura e allineamento */
+  
   display: inline-block;
   margin-left: 10px; 
   vertical-align: middle; 
@@ -218,7 +218,7 @@ h1 {
 @media (max-width: 480px) {
   .card { padding: 2rem 1.25rem; border-radius: 16px; }
   h1 { font-size: 1.45rem; } 
-  .bio { font-size: 0.88rem; } /* Adattata proporzionalmente al mobile per non comprimere */
+  .bio { font-size: 0.88rem; } 
   .link-btn { font-size: 0.85rem; padding: 0.8rem 1rem; }
   .avatar { width: 75px; height: 75px; }
   .social-icons { gap: 0.75rem; }
