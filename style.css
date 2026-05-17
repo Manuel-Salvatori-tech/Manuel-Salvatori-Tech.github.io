@@ -157,9 +157,7 @@ h1 {
 .link-btn.wip {
   opacity: 0.5;
   cursor: default;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: block; /* Modificato da flex a block per centrare il testo come gli altri bottoni */
   pointer-events: none;
 }
 .link-btn.wip:hover { animation: none; }
